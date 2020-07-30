@@ -26,7 +26,7 @@ library(RColorBrewer)
 library(widgetframe)
 library(scales)
 installations <- data.frame("Name" = c("Austin Installation", "Aberdeen Installation", "Leavenworth Installation"),
-                            "lat" = c(30.26897, 39.42535, 39.34798), "lng" = c(-97.74081,-76.21358,-94.93554 ))
+                            "lat" = c(30.26897, 39.42535, 39.34798), "lng" = c(-97.74081,-76.21358,-94.93554 ), "pop"=c(1274000,255441,81758), "dense"=c(1245,485,174))
 myfile <- "https://github.com/CSSEGISandData/COVID-19/raw/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv"
 confirmed <- read_csv(myfile)
 inst1CC <- confirmed[confirmed$Combined_Key == "Travis, Texas, US" ,11:ncol(confirmed)]
@@ -37,7 +37,8 @@ incidence <- read_csv(myfile)
 installations = installations %>% mutate(Incidence_Rate = c(
 incidence[incidence$Combined_Key == "Travis, Texas, US",]$Incidence_Rate,
 incidence[incidence$Combined_Key == "Harford, Maryland, US",]$Incidence_Rate,
-incidence[incidence$Combined_Key == "Leavenworth, Kansas, US",]$Incidence_Rate))
+incidence[incidence$Combined_Key == "Leavenworth, Kansas, US",]$Incidence_Rate),
+county=c("Travis, Texas, US","Harford, Maryland, US","Leavenworth, Kansas, US"))
 myfile <- "https://opendata.arcgis.com/datasets/6ac5e325468c4cb9b905f1728d6fbf0f_0.csv?outSR=%7B%22latestWkid%22%3A3857%2C%22wkid%22%3A102100%7D"
 capacity <- read_csv(myfile)
 installations = installations %>% mutate(Beds = c(
@@ -49,15 +50,17 @@ testing <- read_csv(myfile)
 testing = filter(testing, testing$totalTestResultsIncrease >0)
 testCap1 = mean(Map("/",testing[1:7, "positiveIncrease"], testing[1:7, "totalTestResultsIncrease"])[[1]])
 tests1 = mean(testing[1:7, "positiveIncrease"][[1]])
+pos1 = testing[1,"positive"]
 myfile<- "https://covidtracking.com/api/v1/states/md/daily.csv"
 testing <- read_csv(myfile)
 testing = filter(testing, testing$totalTestResultsIncrease >0)
 testCap2 = mean(Map("/",testing[1:7, "positiveIncrease"], testing[1:7, "totalTestResultsIncrease"])[[1]])
 tests2 = mean(testing[1:7, "positiveIncrease"][[1]])
+pos2 = testing[1,"positive"]
 myfile<- "https://covidtracking.com/api/v1/states/ks/daily.csv"
 testing <- read_csv(myfile)
 testing = filter(testing, testing$totalTestResultsIncrease >0)
 testCap3 = mean(Map("/",testing[1:7, "positiveIncrease"], testing[1:7, "totalTestResultsIncrease"])[[1]])
 tests3 = mean(testing[1:7, "positiveIncrease"][[1]])
-installations = installations %>% mutate(Testing_Ratio = c(testCap1, testCap2, testCap3))
-installations = installations %>% mutate(Testing_Total = c(tests1, tests2, tests3))
+pos3 = testing[1,"positive"]
+installations = installations %>% mutate(Testing_Ratio = c(testCap1, testCap2, testCap3),Testing_Total = c(tests1, tests2, tests3), Total_Confirmed=as.numeric(c(pos1,pos2,pos3)))

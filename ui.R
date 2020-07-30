@@ -23,7 +23,7 @@ shinyUI(dashboardPage(skin = "green",
                 selectizeInput(inputId = "inst",label = "Installation",choices = installations$Name)),
   
       box(
-        textOutput("tstCR"))),
+        htmlOutput("tstCR"))),
       
       
       tabItem(tabName = "hmap", box(tags$iframe(src="https://www.youtube.com/embed/dQw4w9WgXcQ",width="600",height="400") )
