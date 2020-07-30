@@ -8,10 +8,10 @@ shinyUI(dashboardPage(skin = "green",
     
         sidebarMenu(
               
-          menuItem("Map", tabName = "map", icon = icon("map")),
+          menuItem("Current Covid-19 Situation", tabName = "map", icon = icon("map")),
           #menuItem("Data", tabName = "data", icon = icon("database")),
           #menuItem("State by State", tabName = "statedata", icon = icon("database")),
-          menuItem("Geographic Spread", tabName = "hmap", icon = icon("database"))                          
+          menuItem("Historical Trend", tabName = "hmap", icon = icon("database"))                          
                                     )
                                     ),
  
@@ -26,10 +26,10 @@ shinyUI(dashboardPage(skin = "green",
         htmlOutput("tstCR"))),
       
       
-      tabItem(tabName = "hmap", box(tags$iframe(src="https://www.youtube.com/embed/dQw4w9WgXcQ",width="600",height="400") )
+      tabItem(tabName= "hmap",box(plotOutput("timeline"),selectizeInput(inputId = "inst2",label = "Installation",choices = installations$Name)))
 )
  
 )
 )
 )
-)
+

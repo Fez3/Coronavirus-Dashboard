@@ -25,9 +25,10 @@ shinyServer(
                 
               }, ignoreInit = TRUE)
               output$tstCR <- renderText({ 
-                paste( "<b>",installations[installations$Name==input$inst,]$county,"</b>", "Population= ", "<b>",installations[installations$Name==input$inst,]$pop,
+                paste( "<b>",installations[installations$Name==input$inst,]$county,"</b>",
+                       "Population= ", "<b>",format(installations[installations$Name==input$inst,]$pop, big.mark=","),
                        "</b>", " Population Density= ","<b>", installations[installations$Name==input$inst,]$dense,"</b>", "per square mile","<br>",
-                  "<h2>", "Total Confirmed Cases: ",installations[installations$Name==input$inst,]$Total_Confirmed," (",
+                  "<h2>", "Current Confirmed Cases: ",format(installations[installations$Name==input$inst,]$Total_Confirmed,big.mark=",")," (",
                   scales::percent(installations[installations$Name==input$inst,]$Total_Confirmed / installations[installations$Name==input$inst,]$pop),")"," </h2><br>", 
                   "<b>",scales::percent(installations[installations$Name== input$inst,]$Testing_Ratio),"</b>", "positive of", "<b>",
                       round(installations[installations$Name== input$inst,]$Testing_Total, 0),"</b>", "tests daily during the last seven days","<br>",
@@ -36,6 +37,19 @@ shinyServer(
                   COVID-19 - virtual press conference - 30 March 2020</a>",sep=" ")
                 
               })
-              
+            
+              output$timeline=renderPlot({
+                confirmedT = confirmed[confirmed$Combined_Key==installations[installations$Name==input$inst2,]$county,]
+                ggplot(confirmedT, aes(x=Date)) + 
+                  geom_line(aes(y=Active_Cases, col="red")) + 
+                  geom_line(aes(y=Resolved_Cases, col="blue"))+
+                  labs(title=paste("Time Series of Covid-19 Cases for", installations[installations$Name==input$inst2,]$county, sep=" "),
+                       subtitle="No data on recoveries, mean time to resolution of 21 days is used", 
+                       caption="Source: Economics", 
+                       y="Covid-19 Cases", 
+                       color=NULL) +scale_color_manual(labels = c("Resolved", "Active"), 
+                                                       values = c( "#0339fc","#fc0313"))
+              })
+  
           
             })
