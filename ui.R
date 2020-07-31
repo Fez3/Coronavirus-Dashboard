@@ -26,7 +26,8 @@ shinyUI(dashboardPage(skin = "green",
         htmlOutput("tstCR"))),
       
       
-      tabItem(tabName= "hmap",box(plotOutput("timeline"),selectizeInput(inputId = "inst2",label = "Installation",choices = installations$Name)))
+      tabItem(tabName= "hmap",box(plotOutput("timeline"),selectizeInput(inputId = "inst2",label = "Installation",choices = installations$Name)),
+              box(htmlOutput("info")))
 )
  
 )

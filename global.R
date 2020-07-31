@@ -49,9 +49,14 @@ county=c("Travis, Texas, US","Harford, Maryland, US","Leavenworth, Kansas, US"))
 myfile <- "https://opendata.arcgis.com/datasets/6ac5e325468c4cb9b905f1728d6fbf0f_0.csv?outSR=%7B%22latestWkid%22%3A3857%2C%22wkid%22%3A102100%7D"
 capacity <- read_csv(myfile)
 installations = installations %>% mutate(Beds = c(
-sum(capacity[capacity$STATE=="TX" & capacity$COUNTY=="TRAVIS",]$BEDS),
-sum(capacity[capacity$STATE=="MD" & capacity$COUNTY=="HARFORD",]$BEDS),
-sum(capacity[capacity$STATE=="KS" & capacity$COUNTY=="LEAVENWORTH",]$BEDS)))
+sum(pmax( capacity[capacity$STATE=="TX" & capacity$COUNTY=="TRAVIS",]$BEDS),0),
+sum(pmax(capacity[capacity$STATE=="MD" & capacity$COUNTY=="HARFORD",]$BEDS),0),
+sum(pmax(capacity[capacity$STATE=="KS" & capacity$COUNTY=="LEAVENWORTH",]$BEDS,0))))
+installations = installations %>% mutate(Total_Confirmed = c(
+  incidence[incidence$Combined_Key == "Travis, Texas, US",]$Active,
+  incidence[incidence$Combined_Key == "Harford, Maryland, US",]$Active,
+  incidence[incidence$Combined_Key == "Leavenworth, Kansas, US",]$Active),
+  state=c("Texas","Maryland","Kansas"))
 myfile<- "https://covidtracking.com/api/v1/states/tx/daily.csv"
 testing <- read_csv(myfile)
 testing = filter(testing, testing$totalTestResultsIncrease >0)
@@ -70,4 +75,4 @@ testing = filter(testing, testing$totalTestResultsIncrease >0)
 testCap3 = mean(Map("/",testing[1:7, "positiveIncrease"], testing[1:7, "totalTestResultsIncrease"])[[1]])
 tests3 = mean(testing[1:7, "positiveIncrease"][[1]])
 pos3 = testing[1,"positive"]-testing[1,"recovered"]-testing[1,"death"]
-installations = installations %>% mutate(Testing_Ratio = c(testCap1, testCap2, testCap3),Testing_Total = c(tests1, tests2, tests3), Total_Confirmed=as.numeric(c(pos1,pos2,pos3)))
+installations = installations %>% mutate(Testing_Ratio = c(testCap1, testCap2, testCap3),Testing_Total = c(tests1, tests2, tests3) )
