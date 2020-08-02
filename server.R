@@ -11,8 +11,8 @@ shinyServer(
               output$map <- renderLeaflet({
                 
                
-               
                 map= leaflet(data = installations) %>% setView(-96, 37.8, 4) %>% addTiles() %>% addMarkers(., ~lng, ~lat)
+               
                 return(map)
                    
                 
@@ -64,7 +64,8 @@ shinyServer(
                 "</b> beds per 1,000 people. The average number of beds per 1,000 people in the USA is ordinarily <b> 2.9 </b> 
                 ( <a href='https://data.worldbank.org/indicator/SH.MED.BEDS.ZS'> The World Bank </a>)", 
                 " The WHO does not have a standard in place at this time (<a href='https://www.who.int/data/gho/indicator-metadata-registry/imr-details/3119'> link </a>). ",
-                
+                "<br>", "<br>",
+                "Whitehouse reopening criteria call for a 14-day downward trajectory in new coronavirus cases. <a href='https://www.whitehouse.gov/openingamerica/'> whitehouse.gov<a>",
                 
                 sep="")
               })

@@ -1,18 +1,22 @@
 
  
 shinyUI(dashboardPage(skin = "green",
-  dashboardHeader(title = "Installations"),
+  dashboardHeader(title = "Installation Report"),
   
-  dashboardSidebar(Title="Aaron Festinger", br(), 
-                   img(src="A.jpg", width=100,height = 100, align="center"),
+  dashboardSidebar(
+    Title="Direct questions or issues to", br(), 
+    img(src="userimage.jpg", width=50,height = 50, align="center"), 
+    subtitle = a(href = "mailto:aaron.festinger@gmail.com", "Aaron Festinger"),
+                   
     
-        sidebarMenu(
+        sidebarMenu( 
               
           menuItem("Current Covid-19 Situation", tabName = "map", icon = icon("map")),
           #menuItem("Data", tabName = "data", icon = icon("database")),
           #menuItem("State by State", tabName = "statedata", icon = icon("database")),
           menuItem("Historical Trend", tabName = "hmap", icon = icon("database"))                          
                                     )
+      
                                     ),
  
    dashboardBody(

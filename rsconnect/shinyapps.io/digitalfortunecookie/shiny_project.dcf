@@ -5,6 +5,9 @@ account: digitalfortunecookie
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 1396078
-bundleId: 2548696
+bundleId: 3464946
 url: https://digitalfortunecookie.shinyapps.io/shiny_project/
-when: 1572370962.04496
+when: 1596354492.01521
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: testingGround.R
